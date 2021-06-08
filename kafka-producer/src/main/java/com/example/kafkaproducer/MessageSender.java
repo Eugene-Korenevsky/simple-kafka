@@ -14,7 +14,7 @@ public class MessageSender {
     private KafkaTemplate<String, User> userKafkaTemplate;
 
     public void sendUser(User user) {
-        ListenableFuture<SendResult<String, Object>> future = userKafkaTemplate.send("first", user);
+        ListenableFuture<SendResult<String, User>> future = userKafkaTemplate.send("first", user);
 
         future.addCallback(new ListenableFutureCallback<SendResult<String, User>>() {
 
