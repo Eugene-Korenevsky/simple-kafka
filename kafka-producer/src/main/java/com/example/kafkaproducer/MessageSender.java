@@ -11,15 +11,15 @@ import org.springframework.util.concurrent.ListenableFutureCallback;
 @Component
 public class MessageSender {
     @Autowired
-    private KafkaTemplate<String, Object> userKafkaTemplate;
+    private KafkaTemplate<String, User> userKafkaTemplate;
 
-    public void sendUser(Object user) {
+    public void sendUser(User user) {
         ListenableFuture<SendResult<String, Object>> future = userKafkaTemplate.send("first", user);
 
-        future.addCallback(new ListenableFutureCallback<SendResult<String, Object>>() {
+        future.addCallback(new ListenableFutureCallback<SendResult<String, User>>() {
 
             @Override
-            public void onSuccess(SendResult<String, Object> result) {
+            public void onSuccess(SendResult<String, User> result) {
                 System.out.println("successful sending " + result);
             }
 
