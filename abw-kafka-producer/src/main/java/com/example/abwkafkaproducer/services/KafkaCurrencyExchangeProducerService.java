@@ -2,7 +2,7 @@ package com.example.abwkafkaproducer.services;
 
 
 import com.example.abwkafkaproducer.kafka_producers.CurrencyExchangeSender;
-import com.example.abwkafkaproducer.models.clients.abw.currency.CurrencyExchangeDTO;
+import com.example.abwkafkaproducer.models.CurrencyExchangeDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
@@ -26,8 +26,7 @@ public class KafkaCurrencyExchangeProducerService {
     public void currencyExchange() throws ExecutionException, InterruptedException, TimeoutException {
         List<CurrencyExchangeDTO> currencyExchangeDTOS = currencyExchangeService.getCurrencyExchanges();
         for (CurrencyExchangeDTO currencyExchange : currencyExchangeDTOS) {
-            System.out.println(currencyExchange);
-            currencyExchangeSender.sendCurrencyExchange(currencyExchangeDTOS.get(1));
+            currencyExchangeSender.sendCurrencyExchange(currencyExchange);
         }
     }
 }

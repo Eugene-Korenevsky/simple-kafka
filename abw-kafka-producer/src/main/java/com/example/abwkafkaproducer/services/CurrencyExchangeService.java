@@ -1,7 +1,7 @@
 package com.example.abwkafkaproducer.services;
 
-import com.example.abwkafkaproducer.models.clients.abw.currency.Currency;
-import com.example.abwkafkaproducer.models.clients.abw.currency.CurrencyExchangeDTO;
+import com.example.abwkafkaproducer.models.Currency;
+import com.example.abwkafkaproducer.models.CurrencyExchangeDTO;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -21,7 +21,7 @@ public class CurrencyExchangeService {
                     CurrencyExchangeDTO currencyExchangeDTO = new CurrencyExchangeDTO();
                     currencyExchangeDTO.setCurrencyMain(currency);
                     currencyExchangeDTO.setCurrencyTo(currencyTo);
-                    currencyExchangeDTO.setValue(BigDecimal.valueOf(22.22));
+                    currencyExchangeDTO.setValue(BigDecimal.valueOf(29.22));
                     currencyExchangeDTOS.add(currencyExchangeDTO);
                 }
             }

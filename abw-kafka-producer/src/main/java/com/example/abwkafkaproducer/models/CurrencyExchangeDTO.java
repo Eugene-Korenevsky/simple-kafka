@@ -1,6 +1,5 @@
-package com.example.abwkafkaproducer.models.clients.abw.currency;
+package com.example.abwkafkaproducer.models;
 
-import com.example.abwkafkaproducer.models.clients.abw.currency.Currency;
 import lombok.Data;
 
 import java.math.BigDecimal;

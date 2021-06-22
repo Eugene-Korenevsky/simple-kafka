@@ -1,6 +1,6 @@
 package com.example.abwkafkaproducer.kafka_consumers;
 
-import com.example.abwkafkaproducer.models.clients.abw.car_ad.CarAdDTO;
+import com.example.abwkafkaproducer.models.CarAdDTO;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,25 +10,24 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Set;
 
 @Component
 public class CarAdListener {
 
     @Autowired
-    private KafkaTemplate<String, CarAdDTO> carAdDTOKafkaTemplate;
+    private KafkaTemplate<String, CarAdDTO> kafkaTemplate;
 
     private final static ArrayList<String> cars = new ArrayList<>(Arrays.asList("Audi", "BMW"));
 
     @KafkaListener(topics = "car_ad", groupId = "car_adGroup",
-            containerFactory = "carAdDTOKafkaListenerContainerFactory")
-    public void carAdListener(ConsumerRecord<String, CarAdDTO> consumerRecord) {
-        if (cars.contains(consumerRecord.value().getCarBrandName())) consumerRecord.value().setCorrect(true);
-        else {
-            consumerRecord.value().setCorrect(false);
-            consumerRecord.value().setErrorMessage("not valid car brand name");
-        }
-        ProducerRecord<String, CarAdDTO> record = new ProducerRecord<>("car_ad-result", consumerRecord.value());
-        carAdDTOKafkaTemplate.send(record);
+            containerFactory = "kafkaJsonListenerContainerFactory")
+    public void carAdListener(CarAdDTO carAdDTO) {
+            if (cars.contains(carAdDTO.getCarBrandName())) carAdDTO.setCorrect(true);
+            else {
+                carAdDTO.setCorrect(false);
+                carAdDTO.setErrorMessage("not valid car brand name");
+            }
+            ProducerRecord<String, CarAdDTO> record = new ProducerRecord<>("car_ad-result", carAdDTO);
+            kafkaTemplate.send(record);
     }
 }

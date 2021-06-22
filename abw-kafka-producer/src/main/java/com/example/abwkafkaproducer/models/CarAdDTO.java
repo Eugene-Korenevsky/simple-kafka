@@ -1,7 +1,5 @@
-package com.example.abwkafkaproducer.models.clients.abw.car_ad;
+package com.example.abwkafkaproducer.models;
 
-import com.example.abwkafkaproducer.models.clients.abw.currency.Currency;
-import com.example.abwkafkaproducer.models.clients.abw.user.UserDTO;
 import lombok.Data;
 
 import java.math.BigDecimal;
