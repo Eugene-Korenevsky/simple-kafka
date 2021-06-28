@@ -12,7 +12,7 @@ public class KafkaSender {
     @Autowired
     private KafkaTemplate<String, Object> kafkaTemplate;
 
-    public void sendCurrencyExchange(Object o, String topic) {
+    public void send(Object o, String topic) {
         ProducerRecord<String, Object> record = new ProducerRecord<>(topic, o);
         kafkaTemplate.send(record);
     }
