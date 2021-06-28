@@ -3,16 +3,23 @@ package com.example.abwkafkaproducer.services;
 import com.example.abwkafkaproducer.kafka_producers.KafkaSender;
 import com.example.abwkafkaproducer.models.CarAdDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 @Service
+@PropertySource("classpath:kafka.properties")
 public class CarAdValidationService {
 
     @Autowired
     private KafkaSender kafkaSender;
+
+    @Value("${car.ad.topic.result}")
+    private String resultTopic;
+
     private final static ArrayList<String> cars = new ArrayList<>(Arrays.asList("Audi", "BMW"));
 
     public void validateCarAd(CarAdDTO carAdDTO) {
@@ -21,6 +28,6 @@ public class CarAdValidationService {
             carAdDTO.setCorrect(false);
             carAdDTO.setErrorMessage("not valid car brand name");
         }
-        kafkaSender.sendCurrencyExchange(carAdDTO, "car_ad-result");
+        kafkaSender.send(carAdDTO, resultTopic);
     }
 }
