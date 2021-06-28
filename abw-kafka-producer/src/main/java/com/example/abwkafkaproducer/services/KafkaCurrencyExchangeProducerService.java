@@ -32,7 +32,7 @@ public class KafkaCurrencyExchangeProducerService {
     public void currencyExchange() throws ExecutionException, InterruptedException, TimeoutException {
         List<CurrencyExchangeDTO> currencyExchangeDTOS = currencyExchangeService.getCurrencyExchanges();
         for (CurrencyExchangeDTO currencyExchange : currencyExchangeDTOS) {
-            kafkaSender.sendCurrencyExchange(currencyExchange,currencyTopic);
+            kafkaSender.send(currencyExchange,currencyTopic);
         }
     }
 }
