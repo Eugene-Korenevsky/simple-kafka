@@ -2,6 +2,7 @@ package com.example.abwkafkaproducer;
 
 import com.example.abwkafkaproducer.models.CarAdDTO;
 import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.common.TopicPartition;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -13,6 +14,8 @@ import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
+import org.springframework.kafka.listener.DeadLetterPublishingRecoverer;
+import org.springframework.kafka.listener.ErrorHandler;
 import org.springframework.kafka.listener.SeekToCurrentErrorHandler;
 import org.springframework.kafka.support.converter.JsonMessageConverter;
 import org.springframework.kafka.support.serializer.JsonSerializer;
@@ -37,13 +40,25 @@ public class KafkaConfig {
         return new DefaultKafkaProducerFactory<>(configProps);
     }
 
+    /**
+     * in DeadLetterPublishingRecoverer we can add some logic with dead letter
+     * also if we will use DeadLetterPublishingRecoverer with default configs, it will add ".DLT" to original topic
+     **/
     @Bean
-    public KafkaListenerContainerFactory<?> kafkaJsonListenerContainerFactory(ConsumerFactory consumerFactory) {
+    public KafkaListenerContainerFactory<?> kafkaJsonListenerContainerFactory(ConsumerFactory consumerFactory,
+                                                                              KafkaTemplate<Object, Object> template) {
+        DeadLetterPublishingRecoverer recovered = new DeadLetterPublishingRecoverer(template,
+                (r, e) -> {
+                    return new TopicPartition(r.topic() + ".DLT", r.partition());
+                });
+        ErrorHandler errorHandler = new SeekToCurrentErrorHandler(recovered, new FixedBackOff(1000L, 2L));
         ConcurrentKafkaListenerContainerFactory<String, Object> factory =
                 new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory);
         factory.setMessageConverter(new JsonMessageConverter());
-        factory.setErrorHandler(new SeekToCurrentErrorHandler(new FixedBackOff(6000L, 2L)));
+        factory.setErrorHandler(errorHandler);
         return factory;
     }
+
+
 }
