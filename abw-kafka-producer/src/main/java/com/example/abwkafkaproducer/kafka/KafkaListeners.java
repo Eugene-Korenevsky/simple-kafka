@@ -1,4 +1,4 @@
-package com.example.abwkafkaproducer.kafka_consumers;
+package com.example.abwkafkaproducer.kafka;
 
 import com.example.abwkafkaproducer.models.CarAdDTO;
 import com.example.abwkafkaproducer.services.CarAdValidationService;

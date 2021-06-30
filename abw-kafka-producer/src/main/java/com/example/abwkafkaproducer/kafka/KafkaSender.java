@@ -1,4 +1,4 @@
-package com.example.abwkafkaproducer.kafka_producers;
+package com.example.abwkafkaproducer.kafka;
 
 import com.example.abwkafkaproducer.models.CurrencyExchangeDTO;
 import org.apache.kafka.clients.producer.ProducerRecord;

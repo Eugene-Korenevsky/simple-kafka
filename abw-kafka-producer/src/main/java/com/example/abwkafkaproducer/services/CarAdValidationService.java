@@ -1,6 +1,6 @@
 package com.example.abwkafkaproducer.services;
 
-import com.example.abwkafkaproducer.kafka_producers.KafkaSender;
+import com.example.abwkafkaproducer.kafka.KafkaSender;
 import com.example.abwkafkaproducer.models.CarAdDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
